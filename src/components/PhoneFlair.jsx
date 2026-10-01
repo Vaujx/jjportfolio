@@ -113,8 +113,8 @@ export function Splash({ active, reduced }) {
   const [i, setI] = useState(0)
 
   useEffect(() => {
-    if (!active || reduced) return undefined
-    const id = setInterval(() => setI((n) => (n + 1) % SPLASHES.length), 4200)
+    if (!active) return undefined
+    const id = setInterval(() => setI((n) => (n + 1) % SPLASHES.length), reduced ? 6500 : 4200)
     return () => clearInterval(id)
   }, [active, reduced])
 

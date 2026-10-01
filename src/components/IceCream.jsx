@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { lowPower } from '../hooks.js'
 
 // Bottom scoop: dark chocolate. Top scoop: cookies and cream.
 const colors = {
@@ -145,11 +146,12 @@ function Cone({ mode }) {
   )
 }
 
-export default function IceCream({ mode }) {
+export default function IceCream({ mode, active = true }) {
   return (
     <Canvas
       camera={{ position: [0, 0.3, 6.2], fov: 35 }}
-      dpr={[1, 2]}
+      dpr={lowPower ? 1 : [1, 2]}
+      frameloop={active ? 'always' : 'never'}
       gl={{ alpha: true, antialias: true }}
       aria-label="A 3D ice cream cone that follows your cursor"
     >

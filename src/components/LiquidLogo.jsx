@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { lowPower } from '../hooks.js'
 
 // A liquid-metal monogram, inspired by collidingScopes/liquid-logo.
 // The text is drawn to a 2D canvas, used as a texture, and a fragment shader
@@ -127,7 +128,7 @@ export default function LiquidLogo({ text = 'JJ', size = 280, mode = 'quiet', re
       return
     }
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1.25 : 2)
     canvas.width = size * dpr
     canvas.height = size * dpr
     gl.viewport(0, 0, canvas.width, canvas.height)
@@ -200,7 +201,8 @@ export default function LiquidLogo({ text = 'JJ', size = 280, mode = 'quiet', re
     }
     window.addEventListener('pointermove', onMove)
 
-    let raf
+    let raf = 0
+    let visible = true
     const start = performance.now()
     const draw = () => {
       const goal = palettes[modeRef.current]
@@ -219,13 +221,24 @@ export default function LiquidLogo({ text = 'JJ', size = 280, mode = 'quiet', re
       gl.uniform3fv(uB, cur.b)
       gl.uniform3fv(uC, cur.c)
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
-      raf = requestAnimationFrame(draw)
+      raf = visible ? requestAnimationFrame(draw) : 0
     }
     draw()
+
+    // Stop drawing while the logo is scrolled out of view.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting
+        if (visible && !raf) raf = requestAnimationFrame(draw)
+      },
+      { rootMargin: '100px' }
+    )
+    io.observe(canvas)
 
     return () => {
       alive = false
       cancelAnimationFrame(raf)
+      io.disconnect()
       window.removeEventListener('pointermove', onMove)
       const lose = gl.getExtension('WEBGL_lose_context')
       if (lose) lose.loseContext()

@@ -32,3 +32,12 @@ Add new projects there.
 - `src/components/PhoneFlair.jsx`: pixel cursors and Minecraft-style splash text. Loud mode only. Edit the `SPLASHES` list to change the messages.
 - `public/`: the JJ favicon (SVG plus PNG fallbacks).
 - `src/components/NokiaPhone.jsx`: the Nokia-style phone that browses your projects. Keys, screen taps and keyboard all work.
+
+## Performance notes
+
+- Smooth scrolling uses Lenis. It is skipped for people who prefer reduced motion.
+- The 3D cone and the shader background load in separate files after the page paints.
+- The phone loads when you scroll near it.
+- The cone and the liquid logo stop drawing when they are off screen.
+- Phones and weaker devices get a lower render resolution automatically.
+- Tune the scroll feel in `src/App.jsx`: change `lerp: 0.09`. Lower is smoother and slower.

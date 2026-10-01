@@ -1,4 +1,5 @@
 import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react'
+import { lowPower } from '../hooks.js'
 
 // Two moods for the same gradient.
 // Quiet: deep indigo, slow, calm.
@@ -29,10 +30,10 @@ const presets = {
 export default function Background({ mode, reduced }) {
   const p = presets[mode]
   return (
-    <div className="bg" aria-hidden="true">
+    <div className="bg-canvas" aria-hidden="true">
       <ShaderGradientCanvas
         style={{ position: 'absolute', inset: 0 }}
-        pixelDensity={1}
+        pixelDensity={lowPower ? 0.6 : 1}
         fov={45}
       >
         <ShaderGradient

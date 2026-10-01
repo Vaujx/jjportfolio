@@ -1,14 +1,48 @@
-import { useEffect, useState } from 'react'
-import Background from './components/Background.jsx'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import LiquidLogo from './components/LiquidLogo.jsx'
-import IceCream from './components/IceCream.jsx'
 import GlassCard, { GlassFilter } from './components/GlassCard.jsx'
 import NokiaPhone from './components/NokiaPhone.jsx'
 import { PixelCursors, Splash } from './components/PhoneFlair.jsx'
 import { profile, projects, experience, skills, phoneAbout } from './data.js'
+import { useIdle, useInView } from './hooks.js'
+
+// The heavy 3D and shader code loads in separate files, only when needed.
+const Background = lazy(() => import('./components/Background.jsx'))
+const IceCream = lazy(() => import('./components/IceCream.jsx'))
+
+// Renders its children only once the spot is near the screen.
+function LazyMount({ children, minHeight = 600, rootMargin = '300px' }) {
+  const [ref, inView] = useInView(rootMargin, { once: true })
+  return (
+    <div ref={ref} style={{ minHeight }}>
+      {inView ? children : null}
+    </div>
+  )
+}
+
+// The 3D cone: loads after the page is idle and pauses when scrolled away.
+function HeroCone({ mode }) {
+  const [ref, inView] = useInView('200px')
+  const [seen, setSeen] = useState(false)
+  const idle = useIdle()
+  useEffect(() => {
+    if (inView) setSeen(true)
+  }, [inView])
+  return (
+    <div className="hero-3d" ref={ref}>
+      {seen && idle && (
+        <Suspense fallback={<div className="cone-skeleton" aria-hidden="true" />}>
+          <IceCream mode={mode} active={inView} />
+        </Suspense>
+      )}
+    </div>
+  )
+}
 
 function useReducedMotion() {
-  const [reduced, setReduced] = useState(false)
+  const [reduced, setReduced] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
   useEffect(() => {
     const q = window.matchMedia('(prefers-reduced-motion: reduce)')
     const update = () => setReduced(q.matches)
@@ -43,6 +77,7 @@ export default function App() {
   const reduced = useReducedMotion()
   const loud = mode === 'loud'
   const t = (quiet, loudText) => (loud ? loudText : quiet)
+  const idle = useIdle()
 
   // Real refraction only works with SVG backdrop filters on Chromium.
   useEffect(() => {
@@ -52,10 +87,58 @@ export default function App() {
     }
   }, [])
 
+  // Smooth scrolling with Lenis. Loaded on demand, skipped for reduced motion.
+  useEffect(() => {
+    if (reduced) return undefined
+    let lenis
+    let raf = 0
+    let cancelled = false
+
+    import('lenis').then(({ default: Lenis }) => {
+      if (cancelled) return
+      lenis = new Lenis({ lerp: 0.09, smoothWheel: true })
+      const loop = (time) => {
+        lenis.raf(time)
+        raf = requestAnimationFrame(loop)
+      }
+      raf = requestAnimationFrame(loop)
+    })
+
+    const onClick = (e) => {
+      const a = e.target.closest ? e.target.closest('a[href^="#"]') : null
+      if (!a || !lenis) return
+      const id = a.getAttribute('href')
+      if (id === '#top') {
+        e.preventDefault()
+        lenis.scrollTo(0)
+        return
+      }
+      const el = id.length > 1 ? document.querySelector(id) : null
+      if (el) {
+        e.preventDefault()
+        lenis.scrollTo(el, { offset: -90 })
+      }
+    }
+    document.addEventListener('click', onClick)
+
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(raf)
+      document.removeEventListener('click', onClick)
+      if (lenis) lenis.destroy()
+    }
+  }, [reduced])
+
   return (
     <>
       <GlassFilter />
-      <Background mode={mode} reduced={reduced} />
+      <div className="bg" aria-hidden="true">
+        {idle && (
+          <Suspense fallback={null}>
+            <Background mode={mode} reduced={reduced} />
+          </Suspense>
+        )}
+      </div>
 
       <div className="page">
         <header className="nav-wrap">
@@ -106,9 +189,7 @@ export default function App() {
               </div>
               <p className="note">{t('psst, flip the switch up top', 'okay, this is the real me')}</p>
             </div>
-            <div className="hero-3d">
-              <IceCream mode={mode} />
-            </div>
+            <HeroCone mode={mode} />
           </section>
 
           {/* ---------- About ---------- */}
@@ -161,18 +242,20 @@ export default function App() {
             </p>
             <div className="work-grid">
               <div className="phone-col">
-                <div className={`phone-stage${loud ? ' is-loud' : ''}`}>
-                  <PixelCursors />
-                  <NokiaPhone
-                    projects={projects}
-                    profile={profile}
-                    about={phoneAbout}
-                    mode={mode}
-                    onMode={setMode}
-                    reduced={reduced}
-                  />
-                  <Splash active={loud} reduced={reduced} />
-                </div>
+                <LazyMount minHeight={600}>
+                  <div className={`phone-stage${loud ? ' is-loud' : ''}`}>
+                    <PixelCursors />
+                    <NokiaPhone
+                      projects={projects}
+                      profile={profile}
+                      about={phoneAbout}
+                      mode={mode}
+                      onMode={setMode}
+                      reduced={reduced}
+                    />
+                    <Splash active={loud} reduced={reduced} />
+                  </div>
+                </LazyMount>
                 <p className="phone-hint">
                   {t('press Menu. try Snake. arrow keys work too.', 'go on, press Menu! then play Snake!')}
                 </p>

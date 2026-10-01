@@ -58,6 +58,50 @@ a {
   position: fixed;
   inset: 0;
   z-index: 0;
+  /* Shows instantly while the shader loads, then the shader fades in on top. */
+  background: radial-gradient(120% 90% at 20% 10%, #3a3f9e 0%, #14173d 55%, #0b0d24 100%);
+  transition: background 0.6s ease;
+}
+
+:root[data-mode='loud'] .bg {
+  background: radial-gradient(120% 90% at 20% 10%, #ff9ab8 0%, #f2c9a0 55%, #fff0dc 100%);
+}
+
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  animation: bg-in 1.2s ease both;
+}
+
+@keyframes bg-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cone-skeleton {
+  width: 42%;
+  aspect-ratio: 1;
+  margin: 22% auto 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  animation: skeleton 1.3s ease-in-out infinite alternate;
+}
+
+@keyframes skeleton {
+  from { opacity: 0.4; }
+  to { opacity: 0.9; }
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
 }
 
 .page {
@@ -82,11 +126,12 @@ a {
   position: absolute;
   inset: 0;
   z-index: -2;
-  backdrop-filter: blur(16px) saturate(1.6);
-  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
 }
 
-.refract .glass::before {
+/* The refraction filter is expensive, so only the nav pill gets it. */
+.refract .nav::before {
   backdrop-filter: url(#liquid-glass) blur(8px) saturate(1.6);
 }
 
@@ -554,6 +599,10 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .bg-canvas,
+  .cone-skeleton {
+    animation: none;
+  }
   html {
     scroll-behavior: auto;
   }
@@ -1036,9 +1085,24 @@ h1 {
   }
 }
 
+/* People who prefer reduced motion still get the splash, just calmer and smaller. */
+@keyframes poke-soft {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-3px, -3px); }
+}
+
+@keyframes splash-soft {
+  from { transform: scale(0.98); }
+  to { transform: scale(1.02); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .pcursor-inner,
+  .pcursor-inner {
+    animation-name: poke-soft;
+    animation-duration: 2.4s;
+  }
   .splash-text {
-    animation: none;
+    animation-name: splash-soft;
+    animation-duration: 1.5s;
   }
 }
