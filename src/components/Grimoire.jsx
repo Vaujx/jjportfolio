@@ -198,7 +198,7 @@ export default function Grimoire({ onHire }) {
         )}
       </button>
 
-      <p className="gr-hint">{coarse ? 'tap the book to open it. tap again to cast.' : 'hover the book. then click it.'}</p>
+      <p className="gr-hint">{coarse ? 'tap the grimoire to open it. tap again to cast.' : 'hover the book. then click it.'}</p>
     </div>
   )
 }
