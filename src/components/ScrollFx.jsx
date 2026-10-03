@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useInView } from '../hooks.js'
 
 // One shared scroll listener for every scroll-linked effect on the page.
@@ -95,5 +95,95 @@ export function Hl({ children }) {
     <mark ref={ref} className={`hl${inView ? ' in' : ''}`}>
       {children}
     </mark>
+  )
+}
+
+// Which section is under the top third of the screen. null while you are still on the intro.
+export function useActiveSection(ids) {
+  const [active, setActive] = useState(null)
+  useEffect(() => {
+    const update = () => {
+      const line = window.innerHeight * 0.35
+      let current = null
+      for (const id of ids) {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= line) current = id
+      }
+      setActive(current)
+    }
+    return subscribe(update)
+  }, [ids])
+  return active
+}
+
+// A thin line at the top of the page that fills as you scroll.
+export function ScrollProgress() {
+  const ref = useRef(null)
+  useEffect(
+    () =>
+      subscribe(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight
+        const p = max > 0 ? window.scrollY / max : 0
+        if (ref.current) ref.current.style.transform = `scaleX(${Math.min(1, Math.max(0, p)).toFixed(4)})`
+      }),
+    []
+  )
+  return <div ref={ref} className="progress" aria-hidden="true" />
+}
+
+const CONE = [
+  '...######...',
+  '..########..',
+  '.##########.',
+  '.##########.',
+  '..########..',
+  '.##########.',
+  '############',
+  '############',
+  '.##########.',
+  '..########..',
+  '.##########.',
+  '..#.#.#.#.#.',
+  '...#.#.#.#..',
+  '....#.#.#...',
+  '.....#.#....',
+  '......#.....',
+]
+
+// A round button that appears once you are past the halfway point.
+export function BackToTop({ loud }) {
+  const [show, setShow] = useState(false)
+  useEffect(
+    () =>
+      subscribe(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight
+        setShow(max > 0 && window.scrollY / max > 0.5)
+      }),
+    []
+  )
+  return (
+    <a
+      href="#top"
+      className={`to-top${show ? ' show' : ''}`}
+      aria-label="Back to top"
+      aria-hidden={!show}
+      tabIndex={show ? 0 : -1}
+    >
+      {loud ? (
+        <svg viewBox="0 0 12 16" shapeRendering="crispEdges" aria-hidden="true">
+          {CONE.flatMap((row, y) =>
+            [...row].map((c, x) =>
+              c === '#' ? (
+                <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={y < 11 ? '#ff7aa8' : '#e0a458'} />
+              ) : null
+            )
+          )}
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg>
+      )}
+    </a>
   )
 }

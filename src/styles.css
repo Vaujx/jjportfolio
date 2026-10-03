@@ -10,7 +10,7 @@
   --tint: rgba(16, 18, 56, 0.28);
   --edge: rgba(255, 255, 255, 0.34);
   --page: #0b0d24;
-  --hl: rgba(154, 162, 255, 0.45);
+  --hl: rgba(154, 162, 255, 0.34);
 }
 
 :root[data-mode='loud'] {
@@ -21,7 +21,7 @@
   --tint: rgba(255, 255, 255, 0.5);
   --edge: rgba(255, 255, 255, 0.75);
   --page: #ffe9e0;
-  --hl: #ffe45e;
+  --hl: rgba(163, 18, 63, 0.22);
 }
 
 *,
@@ -1977,11 +1977,12 @@ html.modal-open {
 }
 
 .hl {
-  padding: 0 0.15em;
-  margin: 0 -0.15em;
-  border-radius: 3px;
-  color: var(--fg);
-  background-image: linear-gradient(transparent 52%, var(--hl) 52%, var(--hl) 94%, transparent 94%);
+  padding: 0 0.1em;
+  margin: 0 -0.1em;
+  border-radius: 2px;
+  color: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(transparent 64%, var(--hl) 64%, var(--hl) 92%, transparent 92%);
   background-repeat: no-repeat;
   background-size: 0% 100%;
   -webkit-box-decoration-break: clone;
@@ -2671,5 +2672,206 @@ html.modal-open {
   .credit:hover .art-shader,
   .credit:hover .liquid-blob {
     animation-duration: 8s;
+  }
+}
+
+/* ---------- Active nav link ---------- */
+.nav-links a {
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.nav-links a.is-active {
+  opacity: 1;
+  font-weight: 700;
+}
+
+.nav-links a.is-active::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Scroll progress line ---------- */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+:root[data-mode='loud'] .progress {
+  background: linear-gradient(90deg, #ff4d4d, #ff9f43, #ffe45e, #4cd964, #4da6ff, #a56bff);
+}
+
+/* ---------- Back to top ---------- */
+.to-top {
+  position: fixed;
+  right: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1.5px var(--edge), 0 8px 24px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(14px) scale(0.9);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.to-top.show {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.to-top.show:hover {
+  transform: translateY(-4px) scale(1.06);
+}
+
+.to-top svg {
+  display: block;
+  width: 22px;
+  height: auto;
+}
+
+:root[data-mode='loud'] .to-top {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+:root[data-mode='loud'] .to-top svg {
+  width: 20px;
+  filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.3));
+}
+
+/* ---------- Phone sound toggle ---------- */
+.sound-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px auto 0;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1.5px var(--edge);
+}
+
+.sound-toggle[aria-pressed='true'] {
+  background: var(--fg);
+  color: var(--page);
+}
+
+:root[data-mode='loud'] .sound-toggle:not([aria-pressed='true']) {
+  background: rgba(255, 255, 255, 0.62);
+}
+
+/* ---------- Quiet mode: calmer and more professional ---------- */
+:root[data-mode='quiet'] {
+  --tint: rgba(14, 16, 50, 0.4);
+}
+
+:root[data-mode='quiet'] body {
+  line-height: 1.7;
+}
+
+:root[data-mode='quiet'] h1 {
+  font-size: clamp(2.4rem, 5.4vw, 4.3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+:root[data-mode='quiet'] .section {
+  padding-top: 110px;
+  padding-bottom: 110px;
+}
+
+:root[data-mode='quiet'] .section h2 {
+  font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+:root[data-mode='quiet'] .section-lead {
+  margin-bottom: 40px;
+  font-size: 1.1rem;
+}
+
+:root[data-mode='quiet'] .hero-summary {
+  max-width: 58ch;
+  font-size: 1.1rem;
+}
+
+:root[data-mode='quiet'] .about-main {
+  font-size: 1.2rem;
+  line-height: 1.7;
+}
+
+:root[data-mode='quiet'] .offer-title {
+  font-weight: 700;
+}
+
+:root[data-mode='quiet'] .btn:hover {
+  transform: translateY(-2px);
+}
+
+:root[data-mode='quiet'] .folder-name,
+:root[data-mode='quiet'] .credit-name,
+:root[data-mode='quiet'] .offer-card h4 {
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  :root[data-mode='quiet'] .section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-links a::after,
+  .to-top {
+    transition: none;
+  }
+}
+
+/* With many projects, the TV stays in view while you scroll the folders (desktop). */
+@media (min-width: 901px) {
+  .desk {
+    align-items: start;
+  }
+  .tv-col {
+    position: sticky;
+    top: 96px;
+    align-self: start;
   }
 }

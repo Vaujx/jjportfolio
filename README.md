@@ -68,3 +68,19 @@ The "Email me" button opens a pixel message window.
 - The flying cat and "HIIIIRREE MEEE~~~" marquee are in `HireBand.jsx`. Change the `WORDS` list to change the text.
 - Scroll effects (word-by-word text, highlighter, TV tuning in) are in `ScrollFx.jsx`.
 - Credits and their hover animations are in `Credits.jsx`.
+
+## Adding a project
+
+1. Open `src/data.js`.
+2. Copy one project block inside `projects` and change the fields.
+3. Give it a unique `id`, a `flavor` (an ice cream name) and a `swatch` color for the folder's dot.
+4. Add `live` (a live demo URL) and `image` (a screenshot path) when you have them.
+5. If you add screenshots, put the files in `public/shots/` and use `'/shots/name.png'`.
+6. Update the "5 featured projects" chip in `src/App.jsx` and the project count in the Work section text.
+
+The folders wrap into more rows on their own. On desktop the TV stays in view while you scroll them.
+
+## Phone sound
+
+Sound is off by default. Visitors turn it on with the "Phone sound" button under the phone.
+The sounds are made in code, so there are no audio files. They live in `src/sound.js`.

@@ -8,9 +8,28 @@ import { PixelCursors, Splash, SwirlPhone } from './components/PhoneFlair.jsx'
 import ContactModal from './components/ContactModal.jsx'
 import HireBand from './components/HireBand.jsx'
 import Credits from './components/Credits.jsx'
-import { Hl, Reveal, RevealText } from './components/ScrollFx.jsx'
+import { BackToTop, Hl, Reveal, RevealText, ScrollProgress, useActiveSection } from './components/ScrollFx.jsx'
+import { sfx, setSoundEnabled } from './sound.js'
 import { profile, projects, experience, skills, phoneAbout } from './data.js'
 import { useIdle, useInView } from './hooks.js'
+
+const NAV_LINKS = [
+  ['about', 'About'],
+  ['work', 'Work'],
+  ['journey', 'Journey'],
+  ['contact', 'Contact'],
+]
+// Every section on the page, and which nav link it belongs to.
+const SECTION_TO_NAV = {
+  about: 'about',
+  work: 'work',
+  phone: 'work',
+  journey: 'journey',
+  toppings: 'journey',
+  credits: 'journey',
+  contact: 'contact',
+}
+const SECTION_IDS = Object.keys(SECTION_TO_NAV)
 
 // The heavy 3D and shader code loads in separate files, only when needed.
 const Background = lazy(() => import('./components/Background.jsx'))
@@ -85,6 +104,28 @@ export default function App() {
   const t = (quiet, loudText) => (loud ? loudText : quiet)
   const idle = useIdle()
   const [contactOpen, setContactOpen] = useState(false)
+  const activeNav = SECTION_TO_NAV[useActiveSection(SECTION_IDS)]
+  const [sound, setSound] = useState(() => {
+    try {
+      return localStorage.getItem('jj-sound') === 'on'
+    } catch {
+      return false
+    }
+  })
+  useEffect(() => {
+    setSoundEnabled(sound)
+    try {
+      localStorage.setItem('jj-sound', sound ? 'on' : 'off')
+    } catch {
+      /* storage can be blocked, that's fine */
+    }
+  }, [sound])
+  const toggleSound = () => {
+    const next = !sound
+    setSoundEnabled(next)
+    setSound(next)
+    if (next) sfx.select()
+  }
   const openContact = () => setContactOpen(true)
 
   // Real refraction only works with SVG backdrop filters on Chromium.
@@ -140,6 +181,8 @@ export default function App() {
   return (
     <>
       <GlassFilter />
+      <ScrollProgress />
+      <BackToTop loud={loud} />
       <div className="bg" aria-hidden="true">
         {idle && (
           <Suspense fallback={null}>
@@ -155,10 +198,16 @@ export default function App() {
               JJ
             </a>
             <div className="nav-links">
-              <a href="#about">About</a>
-              <a href="#work">Work</a>
-              <a href="#journey">Journey</a>
-              <a href="#contact">Contact</a>
+              {NAV_LINKS.map(([id, label]) => (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  className={activeNav === id ? 'is-active' : ''}
+                  aria-current={activeNav === id ? 'true' : undefined}
+                >
+                  {label}
+                </a>
+              ))}
             </div>
             <button
               type="button"
@@ -333,6 +382,13 @@ export default function App() {
               <p className="phone-hint">
                 {t('press Menu. try Snake. arrow keys work too.', 'go on, press Menu! then play Snake!')}
               </p>
+              <button type="button" className="sound-toggle" aria-pressed={sound} onClick={toggleSound}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M4 9v6h4l5 4V5L8 9H4z" />
+                  {sound ? <path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12" /> : <path d="M17 9l5 6M22 9l-5 6" />}
+                </svg>
+                Phone sound: {sound ? 'on' : 'off'}
+              </button>
             </div>
           </section>
 

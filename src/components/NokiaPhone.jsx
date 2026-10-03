@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import SnakeGame from './SnakeGame.jsx'
+import { sfx } from '../sound.js'
 
 // A tiny Nokia-style phone. Click the keys, click the screen, or use your keyboard:
 // arrow keys to move, Enter to select, Backspace to go back, digits to jump.
@@ -142,11 +143,15 @@ export default function NokiaPhone({ projects, profile, about, mode, onMode, red
   const naviLabel = naviLabels[cur.id]
 
   const push = (id, extra = {}) => setStack((s) => [...s, { id, sel: 0, ...extra }])
-  const pop = () => setStack((s) => (s.length > 1 ? s.slice(0, -1) : s))
+  const pop = () => {
+    if (stack.length > 1) sfx.back()
+    setStack((s) => (s.length > 1 ? s.slice(0, -1) : s))
+  }
   const setSel = (i) =>
     setStack((s) => [...s.slice(0, -1), { ...s[s.length - 1], sel: i }])
 
   const move = (d) => {
+    sfx.key()
     if (cur.id === 'snake') {
       gameRef.current?.turn(d < 0 ? 'up' : 'down')
       return
@@ -174,6 +179,7 @@ export default function NokiaPhone({ projects, profile, about, mode, onMode, red
   }
 
   const activate = (i = cur.sel) => {
+    sfx.select()
     switch (cur.id) {
       case 'home':
         push('menu')
@@ -414,7 +420,7 @@ export default function NokiaPhone({ projects, profile, about, mode, onMode, red
             className="key key-num"
             key={n}
             aria-label={`Key ${n}`}
-            onClick={() => (/[0-9]/.test(n) ? pressDigit(Number(n)) : undefined)}
+            onClick={() => (/[0-9]/.test(n) ? pressDigit(Number(n)) : sfx.key())}
           >
             <b>{n}</b>
             <i>{letters}</i>

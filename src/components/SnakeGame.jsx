@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { sfx } from '../sound.js'
 
 // Snake for the phone screen. Walls wrap around, like the classic.
 // The phone sends directions in through the ref: game.turn('up' | 'down' | 'left' | 'right').
@@ -89,12 +90,14 @@ const SnakeGame = forwardRef(function SnakeGame({ onState }, ref) {
     if (body.some((s) => s.x === next.x && s.y === next.y)) {
       stop()
       draw()
+      sfx.over()
       setStatus('over')
       return
     }
     g.snake.unshift(next)
     if (eating) {
       g.score += 1
+      sfx.eat()
       g.food = placeFood(g.snake)
       setUi({ status: 'playing', score: g.score })
     } else {
