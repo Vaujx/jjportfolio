@@ -277,9 +277,9 @@ export default function ProjectDesk({ projects, mode, reduced }) {
   const dragProject = drag ? projects.find((p) => p.id === drag.id) : null
   const flyProject = fly ? projects.find((p) => p.id === fly.id) : null
 
-  let idleMessage = t('DRAG A FOLDER HERE', 'FEED ME A FOLDER!')
+  let idleMessage = t('DRAG A FOLDER HERE', 'DROP A FOLDER HERE')
   if (coarse) idleMessage = t('TAP A FOLDER', 'TAP A FOLDER!')
-  if (drag && drag.over) idleMessage = t('DROP TO OPEN', 'DROP IT!!')
+  if (drag && drag.over) idleMessage = t('DROP TO OPEN', 'DROP IT')
 
   const windowProps = {
     project,
@@ -313,8 +313,8 @@ export default function ProjectDesk({ projects, mode, reduced }) {
         </ul>
         <p className="folders-hint">
           {coarse
-            ? t('Tap a folder. It flies to the TV.', 'Tap a folder. Watch it fly!')
-            : t('Drag a folder onto the TV. Or just click it.', 'Grab a folder. Throw it at the TV. Go on.')}
+            ? t('Tap a folder. It flies to the TV.', 'Tap a folder. Watch it fly.')
+            : t('Drag a folder onto the TV. Or just click it.', 'Grab a folder. Drop it on the TV.')}
         </p>
       </div>
 

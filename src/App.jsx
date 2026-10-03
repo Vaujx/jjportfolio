@@ -6,7 +6,7 @@ import ProjectDesk from './components/ProjectDesk.jsx'
 import { LinkedInIcon, GitHubIcon, MailIcon } from './components/Icons.jsx'
 import { PixelCursors, Splash, SwirlPhone } from './components/PhoneFlair.jsx'
 import ContactModal from './components/ContactModal.jsx'
-import HireBand from './components/HireBand.jsx'
+import Grimoire from './components/Grimoire.jsx'
 import Credits from './components/Credits.jsx'
 import { BackToTop, Hl, Reveal, RevealText, ScrollProgress, useActiveSection } from './components/ScrollFx.jsx'
 import { sfx, setSoundEnabled } from './sound.js'
@@ -213,7 +213,7 @@ export default function App() {
               type="button"
               role="switch"
               aria-checked={loud}
-              aria-label="Switch between quiet and loud mode"
+              aria-label="Switch between quiet and cool mode"
               className="switch"
               onClick={() => setMode(loud ? 'quiet' : 'loud')}
             >
@@ -221,7 +221,7 @@ export default function App() {
               <span className="switch-track">
                 <span className="switch-knob" />
               </span>
-              <span className="switch-label">Loud</span>
+              <span className="switch-label">Cool</span>
             </button>
           </GlassCard>
         </header>
@@ -235,7 +235,7 @@ export default function App() {
                 Open to remote work <span className="status-sep">|</span> UTC+8
               </p>
               <LiquidLogo text="JJ" size={170} mode={mode} reduced={reduced} />
-              <h1>{t('I think a lot. Then I build.', "Hi! I build things and I'm loud about it.")}</h1>
+              <h1>{t('I think a lot. Then I build.', 'I think a lot. Then I build. Out loud.')}</h1>
               <p className="hero-name">
                 I'm {profile.name}, a {profile.role.toLowerCase()} from {profile.location}.
               </p>
@@ -247,8 +247,8 @@ export default function App() {
                     generators.
                   </>,
                   <>
-                    Fresh IT grad (<Hl>July 2026!</Hl>). I build tools with <Hl>JavaScript and Python</Hl>, and I
-                    teach them to talk to AI. Chatbots, quiz makers, file wizards. You name it.
+                    IT graduate (<Hl>July 2026</Hl>). I build tools with <Hl>JavaScript and Python</Hl>, and I add{' '}
+                    <Hl>AI</Hl> where it helps. Chatbots, quiz generators, file tools.
                   </>
                 )}
               </p>
@@ -269,37 +269,37 @@ export default function App() {
                   Download CV
                 </a>
               </div>
-              <p className="note">{t('psst, flip the switch up top', 'okay, this is the real me')}</p>
+              <p className="note">{t('psst, flip the switch up top', 'quiet or cool, same me')}</p>
             </div>
             <HeroCone mode={mode} />
           </section>
 
           {/* ---------- About ---------- */}
           <section id="about" className="section">
-            <h2>{t('Inside my head', 'Outside my head')}</h2>
+            <h2>{t('The quiet side', 'The cool side')}</h2>
             <div className="about-grid">
               <GlassCard className="about-main">
                 <RevealText
                   text={t(
                     `I'm an Information Technology graduate from ${profile.school}. I like to think a problem all the way through before I touch the keyboard.`,
-                    `Give me my closest friends and I turn into a completely different person. Loud. Silly. Zero volume control. Same brain, different flavor.`
+                    `With my closest friends I get loud and silly. It's the same me, just with the volume up.`
                   )}
                 />
                 <RevealText
                   text={t(
                     'I look for a stable junior developer role where I can learn fast, contribute what I know, and grow with a kind team.',
-                    'I want a junior developer role with a kind, dynamic team. Bonus points if someone brings ice cream.'
+                    'I want a junior developer role on a team that cares about good work and still laughs a lot.'
                   )}
                 />
               </GlassCard>
               <div className="facts">
                 <GlassCard className="fact">
-                  <h3>Quiet on the outside</h3>
+                  <h3>Quiet with most people</h3>
                   <p>Most days I think more than I talk.</p>
                 </GlassCard>
                 <GlassCard className="fact">
-                  <h3>Loud with my people</h3>
-                  <p>With my closest friends, I'm the silly one.</p>
+                  <h3>Loud with close friends</h3>
+                  <p>That's where I'm the silly one.</p>
                 </GlassCard>
                 <GlassCard className="fact">
                   <h3>A small circle</h3>
@@ -307,7 +307,15 @@ export default function App() {
                 </GlassCard>
                 <GlassCard className="fact">
                   <h3>Cookies and cream</h3>
-                  <p>My favorite flavor. Dark chocolate, coffee and tea are on the list too.</p>
+                  <p>My favorite ice cream flavor.</p>
+                </GlassCard>
+                <GlassCard className="fact">
+                  <h3>Coffee, tea, dark chocolate</h3>
+                  <p>All three, happily.</p>
+                </GlassCard>
+                <GlassCard className="fact">
+                  <h3>Anime</h3>
+                  <p>I like anime too.</p>
                 </GlassCard>
               </div>
             </div>
@@ -346,7 +354,7 @@ export default function App() {
             <p className="section-lead">
               {t(
                 'Five projects, five folders. Drag one onto the TV to open it.',
-                'Five flavors, five folders. Grab one and throw it at the TV.'
+                'Five flavors, five folders. Drop one on the TV.'
               )}
             </p>
             <ProjectDesk projects={projects} mode={mode} reduced={reduced} />
@@ -355,13 +363,13 @@ export default function App() {
           {/* ---------- Phone ---------- */}
           <section id="phone" className="section">
             <div className="phone-head">
-              <h2>{t('Or pick up the phone', 'Call me maybe')}</h2>
+              <h2>{t('Or pick up the phone', 'Hire me maybe')}</h2>
               {loud && <SwirlPhone />}
             </div>
             <p className="section-lead">
               {t(
-                'It has Snake, my contacts, and a switch between Quiet and Loud.',
-                'It plays Snake. It has my number. It switches modes. What a phone.'
+                'It has Snake, my contacts, and a switch between Quiet and Cool.',
+                'It plays Snake, holds my contacts and switches modes.'
               )}
             </p>
             <div className="phone-wrap">
@@ -380,7 +388,7 @@ export default function App() {
                 </div>
               </LazyMount>
               <p className="phone-hint">
-                {t('press Menu. try Snake. arrow keys work too.', 'go on, press Menu! then play Snake!')}
+                {t('press Menu. try Snake. arrow keys work too.', 'press Menu. then play Snake.')}
               </p>
               <button type="button" className="sound-toggle" aria-pressed={sound} onClick={toggleSound}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -436,11 +444,11 @@ export default function App() {
 
           {/* ---------- Credits ---------- */}
           <section id="credits" className="section">
-            <h2>{t('Standing on good shoulders', 'Shoutout time!')}</h2>
+            <h2>{t('Standing on good shoulders', 'Respect to the makers')}</h2>
             <p className="section-lead">
               {t(
-                'Open source work and generous makers helped me build this site. Hover the cards.',
-                'These people made the cool stuff. I just put it together. Hover the cards!'
+                'Open source work and the platforms behind this site. Hover the cards.',
+                'Their work powers this site. Hover the cards.'
               )}
             </p>
             <Credits />
@@ -448,6 +456,7 @@ export default function App() {
 
           {/* ---------- Contact ---------- */}
           <section id="contact" className="section contact">
+            {loud && <Grimoire onHire={openContact} />}
             <Reveal>
               <GlassCard className="contact-card">
                 <h2>{t('The small circle', "Contact me! I'm a developer for hire!")}</h2>
@@ -484,7 +493,6 @@ export default function App() {
               </GlassCard>
             </Reveal>
           </section>
-          {loud && <HireBand />}
         </main>
 
         <footer className="footer">
@@ -500,6 +508,24 @@ export default function App() {
             </a>
           </div>
           <p>Made with too much thinking, coffee, tea and one scoop of cookies and cream.</p>
+          <p className="footer-legal">
+            Hosted on{' '}
+            <a href="https://vercel.com" target="_blank" rel="noreferrer">
+              Vercel
+            </a>
+            . Code on{' '}
+            <a href={profile.github} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            . Built with React and Vite.
+          </p>
+          <p className="footer-legal">
+            &copy; {new Date().getFullYear()} {profile.name.replace(' Dayap', ' M. Dayap')}. All rights reserved.
+          </p>
+          <p className="footer-legal footer-fine">
+            Anime quotes belong to their creators and are shown as a fan tribute. The tools credited above belong to
+            their makers.
+          </p>
         </footer>
       </div>
       <ContactModal

@@ -45,6 +45,22 @@ const CREDITS = [
     role: 'The smooth scrolling.',
     href: 'https://github.com/darkroomengineering/lenis',
   },
+  {
+    id: 'vercel',
+    kind: 'Hosted on',
+    name: 'Vercel',
+    by: 'vercel.com',
+    role: 'Publishes this site every time I push a change.',
+    href: 'https://vercel.com',
+  },
+  {
+    id: 'github',
+    kind: 'Code on',
+    name: 'GitHub',
+    by: 'github.com',
+    role: 'Keeps the code for this site and my other projects.',
+    href: 'https://github.com/Vaujx',
+  },
 ]
 
 // A dot that glides after your cursor, like Lenis smooths your scroll.
@@ -88,6 +104,9 @@ function LenisArt() {
   )
 }
 
+// A tiny made-up contribution graph. Levels 0 to 3.
+const COMMITS = [0, 1, 0, 2, 1, 3, 0, 1, 2, 3, 1, 0, 2, 3, 3, 1, 0, 1, 3, 2, 0, 2, 3, 1, 1, 0, 2, 3, 2, 1, 0, 3, 2, 1, 2, 3]
+
 function Art({ id }) {
   if (id === 'shader') return <div className="art art-shader" />
   if (id === 'liquid')
@@ -113,6 +132,24 @@ function Art({ id }) {
           <i />
           <i />
         </span>
+      </div>
+    )
+  if (id === 'vercel')
+    return (
+      <div className="art art-vercel">
+        <span className="deploy-line">&gt; deploying jjportfolio</span>
+        <span className="deploy-bar">
+          <i />
+        </span>
+        <span className="deploy-ready">ready</span>
+      </div>
+    )
+  if (id === 'github')
+    return (
+      <div className="art art-github">
+        {COMMITS.map((level, n) => (
+          <i key={n} className={`commit l${level}`} style={{ '--n': n }} />
+        ))}
       </div>
     )
   return <LenisArt />

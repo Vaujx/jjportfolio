@@ -102,8 +102,8 @@ export default function NokiaPhone({ projects, profile, about, mode, onMode, red
     { label: 'About me', go: 'about' },
   ]
   const profileItems = [
-    { label: 'Silent (quiet)', mode: 'quiet' },
-    { label: 'Loud', mode: 'loud' },
+    { label: 'Quiet', mode: 'quiet' },
+    { label: 'Cool', mode: 'loud' },
   ]
   const contactItems = [
     { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
@@ -202,7 +202,7 @@ export default function NokiaPhone({ projects, profile, about, mode, onMode, red
       case 'profiles':
         setSel(i)
         onMode(profileItems[i].mode)
-        flash(profileItems[i].mode === 'loud' ? 'Loud profile on' : 'Silent profile on')
+        flash(profileItems[i].mode === 'loud' ? 'Cool profile on' : 'Quiet profile on')
         break
       case 'contacts':
         setSel(i)

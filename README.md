@@ -62,10 +62,12 @@ The "Email me" button opens a pixel message window.
 - By default it opens the visitor's email app with the message filled in.
 - To send messages straight from the page, make a free form at formspree.io, then paste its URL into `formEndpoint` in `src/data.js`.
 
-## Loud mode extras
+## Cool mode extras
+
+"Cool" is the name visitors see. In the code it is still called `loud` (for example `data-mode='loud'` in the CSS).
 
 - The swirling phone is in `PhoneFlair.jsx`.
-- The flying cat and "HIIIIRREE MEEE~~~" marquee are in `HireBand.jsx`. Change the `WORDS` list to change the text.
+- The floating five-leaf grimoire is in `Grimoire.jsx`. It opens on hover, riffles its pages, and bursts into particles on click before the message window opens. The anime quotes are the `QUOTES` list at the top of that file.
 - Scroll effects (word-by-word text, highlighter, TV tuning in) are in `ScrollFx.jsx`.
 - Credits and their hover animations are in `Credits.jsx`.
 
@@ -84,3 +86,9 @@ The folders wrap into more rows on their own. On desktop the TV stays in view wh
 
 Sound is off by default. Visitors turn it on with the "Phone sound" button under the phone.
 The sounds are made in code, so there are no audio files. They live in `src/sound.js`.
+
+## Copyright and license
+
+The footer shows a copyright line, and credits Vercel (hosting) and GitHub (code).
+The `LICENSE` file says "All rights reserved". If you would rather let others reuse the code,
+replace it with an open license such as MIT.

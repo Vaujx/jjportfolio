@@ -3,7 +3,7 @@ import { lowPower } from '../hooks.js'
 
 // Two moods for the same gradient.
 // Quiet: deep indigo, slow, calm.
-// Loud: strawberry, caramel and cream, fast and wobbly.
+// Cool: crimson and near-black, faster and wavier.
 const presets = {
   quiet: {
     color1: '#1a1d4a',
@@ -16,14 +16,14 @@ const presets = {
     brightness: 0.9,
   },
   loud: {
-    color1: '#ff9ab8',
-    color2: '#e8b27a',
-    color3: '#fff0dc',
-    uSpeed: 0.45,
-    uStrength: 3.2,
-    uDensity: 2.2,
+    color1: '#c1121f',
+    color2: '#ff4d6d',
+    color3: '#1a0508',
+    uSpeed: 0.3,
+    uStrength: 2.4,
+    uDensity: 1.6,
     uFrequency: 5.5,
-    brightness: 1.2,
+    brightness: 0.95,
   },
 }
 

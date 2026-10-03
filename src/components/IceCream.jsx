@@ -6,7 +6,7 @@ import { lowPower } from '../hooks.js'
 // Bottom scoop: dark chocolate. Top scoop: cookies and cream.
 const colors = {
   quiet: { bottom: '#3a2117', top: '#f1eadf', cherry: '#8f9bff' },
-  loud: { bottom: '#55291d', top: '#fff4e6', cherry: '#e0344f' },
+  loud: { bottom: '#3a1a14', top: '#fff4e6', cherry: '#ff2d55' },
 }
 
 function Crumbs() {

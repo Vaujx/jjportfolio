@@ -120,6 +120,6 @@ export const skills = [
 // Text for the phone's "About me" screen.
 export const phoneAbout = {
   quiet: 'IT graduate. Thinks a lot. Builds with care. Looking for remote work.',
-  loud: 'Quiet outside. LOUD with my people. Looking for remote work. Bring cookies and cream.',
-  likes: 'Likes: cookies and cream, dark chocolate, coffee, tea.',
+  loud: 'Quiet and loud are both me. Looking for remote work.',
+  likes: 'Likes: cookies and cream, dark chocolate, coffee, tea, anime.',
 }
