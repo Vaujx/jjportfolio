@@ -2,7 +2,13 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import LiquidLogo from './components/LiquidLogo.jsx'
 import GlassCard, { GlassFilter } from './components/GlassCard.jsx'
 import NokiaPhone from './components/NokiaPhone.jsx'
-import { PixelCursors, Splash } from './components/PhoneFlair.jsx'
+import ProjectDesk from './components/ProjectDesk.jsx'
+import { LinkedInIcon, GitHubIcon, MailIcon } from './components/Icons.jsx'
+import { PixelCursors, Splash, SwirlPhone } from './components/PhoneFlair.jsx'
+import ContactModal from './components/ContactModal.jsx'
+import HireBand from './components/HireBand.jsx'
+import Credits from './components/Credits.jsx'
+import { Hl, Reveal, RevealText } from './components/ScrollFx.jsx'
 import { profile, projects, experience, skills, phoneAbout } from './data.js'
 import { useIdle, useInView } from './hooks.js'
 
@@ -78,6 +84,8 @@ export default function App() {
   const loud = mode === 'loud'
   const t = (quiet, loudText) => (loud ? loudText : quiet)
   const idle = useIdle()
+  const [contactOpen, setContactOpen] = useState(false)
+  const openContact = () => setContactOpen(true)
 
   // Real refraction only works with SVG backdrop filters on Chromium.
   useEffect(() => {
@@ -173,18 +181,43 @@ export default function App() {
           {/* ---------- Hero ---------- */}
           <section className="hero">
             <div className="hero-text">
-              <LiquidLogo text="JJ" size={220} mode={mode} reduced={reduced} />
+              <p className="status">
+                <span className="status-dot" aria-hidden="true" />
+                Open to remote work <span className="status-sep">|</span> UTC+8
+              </p>
+              <LiquidLogo text="JJ" size={170} mode={mode} reduced={reduced} />
               <h1>{t('I think a lot. Then I build.', "Hi! I build things and I'm loud about it.")}</h1>
               <p className="hero-name">
-                {profile.name} is a {profile.role.toLowerCase()} from {profile.location}.
+                I'm {profile.name}, a {profile.role.toLowerCase()} from {profile.location}.
               </p>
-              <p className="hero-sub">{t('Quiet by default. Careful with details.', "Loud only around my people. You're in now.")}</p>
+              <p className="hero-summary">
+                {t(
+                  <>
+                    I'm an Information Technology graduate (<Hl>July 2026</Hl>). I build practical tools with{' '}
+                    <Hl>JavaScript and Python</Hl>, including <Hl>AI-powered features</Hl> like chatbots and quiz
+                    generators.
+                  </>,
+                  <>
+                    Fresh IT grad (<Hl>July 2026!</Hl>). I build tools with <Hl>JavaScript and Python</Hl>, and I
+                    teach them to talk to AI. Chatbots, quiz makers, file wizards. You name it.
+                  </>
+                )}
+              </p>
+              <ul className="chips" aria-label="At a glance">
+                <li>Graduated July 2026</li>
+                <li>300-hour IT support internship</li>
+                <li>5 featured projects</li>
+                <li>JavaScript and Python</li>
+              </ul>
               <div className="hero-actions">
                 <a className="btn btn-solid" href="#work">
                   See my work
                 </a>
-                <a className="btn btn-glass" href={`mailto:${profile.email}`}>
+                <button type="button" className="btn btn-glass" onClick={openContact}>
                   Email me
+                </button>
+                <a className="btn btn-glass" href={profile.cv} download>
+                  Download CV
                 </a>
               </div>
               <p className="note">{t('psst, flip the switch up top', 'okay, this is the real me')}</p>
@@ -197,18 +230,18 @@ export default function App() {
             <h2>{t('Inside my head', 'Outside my head')}</h2>
             <div className="about-grid">
               <GlassCard className="about-main">
-                <p>
-                  {t(
+                <RevealText
+                  text={t(
                     `I'm an Information Technology graduate from ${profile.school}. I like to think a problem all the way through before I touch the keyboard.`,
                     `Give me my closest friends and I turn into a completely different person. Loud. Silly. Zero volume control. Same brain, different flavor.`
                   )}
-                </p>
-                <p>
-                  {t(
+                />
+                <RevealText
+                  text={t(
                     'I look for a stable junior developer role where I can learn fast, contribute what I know, and grow with a kind team.',
                     'I want a junior developer role with a kind, dynamic team. Bonus points if someone brings ice cream.'
                   )}
-                </p>
+                />
               </GlassCard>
               <div className="facts">
                 <GlassCard className="fact">
@@ -229,6 +262,33 @@ export default function App() {
                 </GlassCard>
               </div>
             </div>
+            <h3 className="offer-title">{t('What I can build for you', 'What we can build together')}</h3>
+            <div className="offer">
+              <Reveal delay={0}>
+              <GlassCard className="offer-card">
+                <h4>Web apps and tools</h4>
+                <p>Clear, fast interfaces in JavaScript, HTML and CSS, with a Python back end such as Flask when needed.</p>
+              </GlassCard>
+              </Reveal>
+              <Reveal delay={80}>
+              <GlassCard className="offer-card">
+                <h4>AI-powered features</h4>
+                <p>Chatbots and content tools on top of <Hl>AI APIs</Hl>, like my barangay assistant and my quiz generator.</p>
+              </GlassCard>
+              </Reveal>
+              <Reveal delay={160}>
+              <GlassCard className="offer-card">
+                <h4>Automation and file tools</h4>
+                <p>Python and browser tools that rename, sort and convert files, like GIF Forge and DESKMAN.</p>
+              </GlassCard>
+              </Reveal>
+              <Reveal delay={240}>
+              <GlassCard className="offer-card">
+                <h4>IT support</h4>
+                <p>Hands-on hardware and network troubleshooting from my <Hl>300-hour internship</Hl>.</p>
+              </GlassCard>
+              </Reveal>
+            </div>
           </section>
 
           {/* ---------- Work ---------- */}
@@ -236,54 +296,43 @@ export default function App() {
             <h2>Flavors I've made</h2>
             <p className="section-lead">
               {t(
-                'Five projects. Pick up the phone to browse them, or scroll for the full list.',
-                'Five flavors. Pick a scoop. Or pick up the phone and press all the buttons.'
+                'Five projects, five folders. Drag one onto the TV to open it.',
+                'Five flavors, five folders. Grab one and throw it at the TV.'
               )}
             </p>
-            <div className="work-grid">
-              <div className="phone-col">
-                <LazyMount minHeight={600}>
-                  <div className={`phone-stage${loud ? ' is-loud' : ''}`}>
-                    <PixelCursors />
-                    <NokiaPhone
-                      projects={projects}
-                      profile={profile}
-                      about={phoneAbout}
-                      mode={mode}
-                      onMode={setMode}
-                      reduced={reduced}
-                    />
-                    <Splash active={loud} reduced={reduced} />
-                  </div>
-                </LazyMount>
-                <p className="phone-hint">
-                  {t('press Menu. try Snake. arrow keys work too.', 'go on, press Menu! then play Snake!')}
-                </p>
-              </div>
-              <div className="projects">
-                {projects.map((p) => (
-                  <GlassCard as="article" className="project" key={p.id}>
-                    <div className="project-top">
-                      <span className="swatch" style={{ background: p.swatch }} aria-hidden="true" />
-                      <span className="flavor">{p.flavor}</span>
-                    </div>
-                    <h3>{p.title}</h3>
-                    <p className="project-kind">
-                      {p.name !== p.title ? `${p.name}. ` : ''}
-                      {p.kind}.
-                    </p>
-                    <p>{t(p.quiet, p.loud)}</p>
-                    <ul className="tags">
-                      {p.tags.map((tag) => (
-                        <li key={tag}>{tag}</li>
-                      ))}
-                    </ul>
-                    <a className="project-link" href={p.link} target="_blank" rel="noreferrer">
-                      View {p.title} on GitHub
-                    </a>
-                  </GlassCard>
-                ))}
-              </div>
+            <ProjectDesk projects={projects} mode={mode} reduced={reduced} />
+          </section>
+
+          {/* ---------- Phone ---------- */}
+          <section id="phone" className="section">
+            <div className="phone-head">
+              <h2>{t('Or pick up the phone', 'Call me maybe')}</h2>
+              {loud && <SwirlPhone />}
+            </div>
+            <p className="section-lead">
+              {t(
+                'It has Snake, my contacts, and a switch between Quiet and Loud.',
+                'It plays Snake. It has my number. It switches modes. What a phone.'
+              )}
+            </p>
+            <div className="phone-wrap">
+              <LazyMount minHeight={600}>
+                <div className={`phone-stage${loud ? ' is-loud' : ''}`}>
+                  <PixelCursors />
+                  <NokiaPhone
+                    projects={projects}
+                    profile={profile}
+                    about={phoneAbout}
+                    mode={mode}
+                    onMode={setMode}
+                    reduced={reduced}
+                  />
+                  <Splash active={loud} reduced={reduced} />
+                </div>
+              </LazyMount>
+              <p className="phone-hint">
+                {t('press Menu. try Snake. arrow keys work too.', 'go on, press Menu! then play Snake!')}
+              </p>
             </div>
           </section>
 
@@ -298,7 +347,7 @@ export default function App() {
                 </p>
                 <ul>
                   {experience.points.map((pt) => (
-                    <li key={pt}>{pt}</li>
+                    <li key={pt}>{pt === experience.points[0] ? <><Hl>300-hour</Hl> On-the-Job Training practicum.</> : pt}</li>
                   ))}
                 </ul>
               </GlassCard>
@@ -329,32 +378,80 @@ export default function App() {
             </div>
           </section>
 
+          {/* ---------- Credits ---------- */}
+          <section id="credits" className="section">
+            <h2>{t('Standing on good shoulders', 'Shoutout time!')}</h2>
+            <p className="section-lead">
+              {t(
+                'Open source work and generous makers helped me build this site. Hover the cards.',
+                'These people made the cool stuff. I just put it together. Hover the cards!'
+              )}
+            </p>
+            <Credits />
+          </section>
+
           {/* ---------- Contact ---------- */}
           <section id="contact" className="section contact">
-            <GlassCard className="contact-card">
-              <h2>The small circle</h2>
-              <p>
-                {t(
-                  "I keep my circle small. I'm looking for remote work. If you're building something and want a careful, quiet developer on it, write to me.",
-                  "My circle is small, but there's room for one more. I'm looking for remote work. Say hi!"
-                )}
-              </p>
-              <div className="hero-actions">
-                <a className="btn btn-solid" href={`mailto:${profile.email}`}>
-                  {profile.email}
-                </a>
-                <a className="btn btn-glass" href={profile.github} target="_blank" rel="noreferrer">
-                  github.com/Vaujx
-                </a>
-              </div>
-            </GlassCard>
+            <Reveal>
+              <GlassCard className="contact-card">
+                <h2>{t('The small circle', "Contact me! I'm a developer for hire!")}</h2>
+                <p>
+                  {t(
+                    <>
+                      I keep my circle small. I'm looking for <Hl>remote work</Hl>. If you're building something and
+                      want a careful, quiet developer on it, write to me.
+                    </>,
+                    <>
+                      My circle is small, but there's room for one more. I'm looking for <Hl>remote work</Hl>. Hire
+                      me, say hi, or both!
+                    </>
+                  )}
+                </p>
+                <div className="hero-actions">
+                  <button type="button" className={`btn btn-solid${loud ? ' btn-hire' : ''}`} onClick={openContact}>
+                    {loud ? 'HIRE ME!' : 'Write me a message'}
+                  </button>
+                  <a className="btn btn-glass" href={profile.linkedin} target="_blank" rel="noreferrer">
+                    LinkedIn
+                  </a>
+                  <a className="btn btn-glass" href={profile.github} target="_blank" rel="noreferrer">
+                    GitHub
+                  </a>
+                  <a className="btn btn-glass" href={profile.cv} download>
+                    Download CV
+                  </a>
+                </div>
+                <p className="contact-mail">
+                  Or email{' '}
+                  <a href={`mailto:${profile.email}`}>{profile.email}</a>
+                </p>
+              </GlassCard>
+            </Reveal>
           </section>
+          {loud && <HireBand />}
         </main>
 
         <footer className="footer">
+          <div className="social">
+            <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="John James Dayap on LinkedIn">
+              <LinkedInIcon />
+            </a>
+            <a href={profile.github} target="_blank" rel="noreferrer" aria-label="John James Dayap on GitHub">
+              <GitHubIcon />
+            </a>
+            <a href={`mailto:${profile.email}`} aria-label="Email John James Dayap">
+              <MailIcon />
+            </a>
+          </div>
           <p>Made with too much thinking, coffee, tea and one scoop of cookies and cream.</p>
         </footer>
       </div>
+      <ContactModal
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        email={profile.email}
+        endpoint={profile.formEndpoint}
+      />
     </>
   )
 }

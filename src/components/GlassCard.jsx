@@ -32,8 +32,9 @@ export function GlassFilter() {
   )
 }
 
-export default function GlassCard({ as: Tag = 'div', className = '', children, ...rest }) {
+export default function GlassCard({ as: Tag = 'div', className = '', children, onPointerMove, ...rest }) {
   const onMove = (e) => {
+    if (onPointerMove) onPointerMove(e)
     const r = e.currentTarget.getBoundingClientRect()
     e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
     e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)

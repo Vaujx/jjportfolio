@@ -124,3 +124,38 @@ export function Splash({ active, reduced }) {
     </div>
   )
 }
+
+// A pixel telephone that orbits and spins, with ring waves. Loud mode only.
+const PHONE = [
+  '..XXXXXXXXXX..',
+  '.XXXXXXXXXXXX.',
+  'XXX........XXX',
+  'XX..........XX',
+  '.....XXXX.....',
+  '..XXXXXXXXXX..',
+  '.XXXXXXXXXXXX.',
+  '.XXXXX..XXXXX.',
+  '.XXXX.XX.XXXX.',
+  '.XXXXX..XXXXX.',
+  '.XXXXXXXXXXXX.',
+  'XXXXXXXXXXXXXX',
+]
+
+export function SwirlPhone() {
+  return (
+    <div className="swirl" aria-hidden="true">
+      <div className="swirl-orbit">
+        <div className="swirl-ph">
+          <svg viewBox="0 0 14 12" shapeRendering="crispEdges">
+            {PHONE.flatMap((row, y) =>
+              [...row].map((c, x) =>
+                c === 'X' ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" /> : null
+              )
+            )}
+          </svg>
+        </div>
+      </div>
+      <span className="swirl-ring">RING RING!</span>
+    </div>
+  )
+}

@@ -106,6 +106,7 @@ export default function NokiaPhone({ projects, profile, about, mode, onMode, red
   ]
   const contactItems = [
     { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
+    { label: 'LinkedIn', value: 'in/john-james-dayap', href: profile.linkedin },
     { label: 'GitHub', value: 'github.com/Vaujx', href: profile.github },
   ]
   const project = cur.id === 'project' ? projects.find((p) => p.id === cur.projectId) : null

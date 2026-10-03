@@ -8,6 +8,11 @@ export const profile = {
   location: 'Zambales, Philippines',
   email: 'johnjamesdyp@gmail.com',
   github: 'https://github.com/Vaujx',
+  linkedin: 'https://www.linkedin.com/in/john-james-dayap-83b761415/',
+  cv: '/John-James-Dayap-CV.pdf',
+  // Optional. Paste a Formspree form URL here (https://formspree.io/f/xxxxxxx) so messages are
+  // sent from the page. Leave it null to open the visitor's email app instead.
+  formEndpoint: null,
   school: 'President Ramon Magsaysay State University',
   schoolYears: '2022 to 2026',
 }
@@ -25,6 +30,8 @@ export const projects = [
     loud: 'Paperwork, but fast. A chatbot answers the boring questions so nobody has to.',
     tags: ['Flask', 'Gemini API', 'Scheduling'],
     link: 'https://github.com/Vaujx/BAAC',
+    live: null, // add a live demo URL here, for example 'https://my-demo.onrender.com'
+    image: null, // add a screenshot path here, for example '/shots/baac.png'
   },
   {
     id: 'gifforge',
@@ -38,6 +45,8 @@ export const projects = [
     loud: 'Turns your clips into GIFs without sending them anywhere. Brutalist UI. Zero drama.',
     tags: ['Python', 'pywebview', 'ffmpeg', 'anime.js'],
     link: 'https://github.com/Vaujx/gif-forge',
+    live: null,
+    image: null,
   },
   {
     id: 'deskman',
@@ -51,6 +60,8 @@ export const projects = [
     loud: 'Your messy folder, finally sorted. It shows you the plan before it touches anything. Responsible chaos.',
     tags: ['JavaScript', 'HTML', 'CSS', 'Batch rename'],
     link: 'https://github.com/Vaujx/DESKMAN',
+    live: null,
+    image: null,
   },
   {
     id: 'quiz',
@@ -64,6 +75,8 @@ export const projects = [
     loud: 'Turns your boring reviewer into a boss fight. Upload the file. Survive the quiz.',
     tags: ['AI', 'PDF', 'DOCX'],
     link: 'https://github.com/Vaujx/quizlet',
+    live: null,
+    image: null,
   },
   {
     id: 'translator',
@@ -77,6 +90,8 @@ export const projects = [
     loud: 'Your video files, now speaking English. Show-offs.',
     tags: ['Python', 'Selenium', 'Google Translate'],
     link: 'https://github.com/Vaujx/ForeignLanguage',
+    live: null,
+    image: null,
   },
 ]
 
